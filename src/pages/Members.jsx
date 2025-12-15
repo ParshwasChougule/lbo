@@ -77,12 +77,12 @@ const Members = () => {
                             filteredMembers.map((member) => (
                                 <Col key={member.id} xs={6} md={4} lg={3} xl={2} className="mb-3">
                                     <Card className="h-100 border-0 shadow-sm member-card text-center overflow-hidden">
-                                        <div className="card-top-border bg-primary" style={{ height: '3px' }}></div>
+                                        <div className="card-top-border" style={{ height: '3px', backgroundColor: '#ed9940' }}></div>
                                         <Card.Body className="p-2 py-3">
                                             <div className="mb-2 d-inline-block position-relative">
-                                                <div className="rounded-circle p-1 border border-1 border-primary border-opacity-25">
+                                                <div className="rounded-circle p-1 border border-1 border-opacity-25" style={{ borderColor: '#ed9940' }}>
                                                     <div className="rounded-circle bg-light d-flex align-items-center justify-content-center overflow-hidden" style={{ width: '60px', height: '60px' }}>
-                                                        <span className="h4 mb-0 text-secondary opacity-50 fw-bold">
+                                                        <span className="h4 mb-0 opacity-50 fw-bold" style={{ color: '#ed9940' }}>
                                                             {member.name.charAt(0)}
                                                         </span>
                                                     </div>
@@ -90,7 +90,7 @@ const Members = () => {
                                             </div>
 
                                             <h6 className="fw-bold text-dark mb-0 text-truncate px-2" style={{ fontSize: '0.9rem' }} title={member.name}>{member.name}</h6>
-                                            <p className="text-primary fw-medium small text-uppercase mb-1 text-truncate px-1" style={{ fontSize: '0.7rem' }}>
+                                            <p className="fw-medium small text-uppercase mb-1 text-truncate px-1" style={{ fontSize: '0.7rem', color: '#ed9940' }}>
                                                 {member.business || 'Entrepreneur'}
                                             </p>
 
@@ -101,7 +101,7 @@ const Members = () => {
                                             )}
 
                                             <p className="text-muted small mb-0" style={{ fontSize: '0.75rem' }}>
-                                                <i className="fas fa-map-marker-alt text-danger me-1"></i>
+                                                <i className="fas fa-map-marker-alt me-1" style={{ color: '#ed9940' }}></i>
                                                 {member.city || 'India'}
                                             </p>
                                         </Card.Body>

@@ -121,7 +121,7 @@ const Chapters = () => {
                                     <p className="lead mb-4 position-relative z-1 opacity-90">
                                         Lead the change in your city. We provide the framework, you provide the leadership.
                                     </p>
-                                    <Button as={Link} to="/contact" variant="light" size="lg" className="rounded-pill px-5 shadow position-relative z-1 text-primary fw-bold">
+                                    <Button as={Link} to="/contact" state={{ type: 'new_chapter' }} variant="light" size="lg" className="rounded-pill px-5 shadow position-relative z-1 text-primary fw-bold">
                                         Apply to Lead
                                     </Button>
                                 </Card.Body>

@@ -46,7 +46,7 @@ const AppNavbar = () => {
                         <Nav.Link as={Link} to="/members" className="nav-link-custom" active={location.pathname === '/members'}>Members</Nav.Link>
                         <Nav.Link as={Link} to="/events" className="nav-link-custom" active={location.pathname === '/events'}>Events</Nav.Link>
                         <Nav.Link as={Link} to="/contact" className="nav-link-custom" active={location.pathname === '/contact'}>Contact</Nav.Link>
-                        <Button as={Link} to="/register" variant="primary" className="ms-lg-3 px-4 rounded-pill btn-hover-effect fw-medium">
+                        <Button as={Link} to="/contact" state={{ type: 'join_lbo' }} variant="primary" className="ms-lg-3 px-4 rounded-pill btn-hover-effect fw-medium">
                             Join LBO
                         </Button>
                     </Nav>

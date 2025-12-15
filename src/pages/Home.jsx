@@ -95,7 +95,7 @@ const Home = () => {
                                 Connect, Collaborate, and Grow together. LBO is the premier platform for Lingayat entrepreneurs to network and expand their horizons.
                             </p>
                             <div className="d-flex gap-3 justify-content-center">
-                                <Button as={Link} to="/register" variant="light" size="lg" className="px-4 fw-bold text-primary shadow">
+                                <Button as={Link} to="/contact" state={{ type: 'join_lbo' }} variant="light" size="lg" className="px-4 fw-bold text-primary shadow">
                                     Join Now
                                 </Button>
                                 <Button as={Link} to="/about" variant="outline-light" size="lg" className="px-4">
