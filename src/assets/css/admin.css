@@ -1,0 +1,105 @@
+/* Admin Layout Styles */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: #94a3b8;
+    min-height: 100vh;
+    transition: all 0.3s;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+}
+
+.admin-sidebar .sidebar-brand {
+    color: #fff;
+    padding: 20px 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: var(--font-heading);
+    letter-spacing: -0.5px;
+}
+
+.admin-sidebar .nav-link {
+    color: #94a3b8;
+    padding: 16px 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.admin-sidebar .nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.admin-sidebar .nav-link.active {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.15) 0%, rgba(79, 70, 229, 0) 100%);
+    border-left-color: var(--primary);
+}
+
+.admin-sidebar .nav-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.admin-content {
+    flex: 1;
+    background-color: var(--bg-body);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    background-color: #fff;
+    box-shadow: var(--shadow-sm);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-main {
+    padding: 30px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active,
+.status-approved,
+.status-scheduled {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.status-inactive,
+.status-pending,
+.status-planning {
+    background-color: #fef9c3;
+    color: #a16207;
+}
+
+.status-cancelled,
+.status-rejected {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
