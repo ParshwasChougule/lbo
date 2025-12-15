@@ -75,8 +75,8 @@ const Members = () => {
                     <Row className="g-4">
                         {filteredMembers.length > 0 ? (
                             filteredMembers.map((member) => (
-                                <Col key={member.id} xs={6} md={4} lg={3} xl={2} className="mb-3">
-                                    <Card className="h-100 border-0 shadow-sm member-card text-center overflow-hidden">
+                                <Col key={member.id} xs={6} md={4} lg={3} xl={2} className="mb-4" data-aos="zoom-in" data-aos-delay="50">
+                                    <Card className="h-100 shadow-sm border-0 member-card text-center overflow-hidden position-relative">
                                         <div className="card-top-border" style={{ height: '3px', backgroundColor: '#ed9940' }}></div>
                                         <Card.Body className="p-2 py-3">
                                             <div className="mb-2 d-inline-block position-relative">

@@ -69,7 +69,7 @@ const Chapters = () => {
 
                     <Row className="g-4">
                         {chapters.map((chapter, idx) => (
-                            <Col md={6} lg={4} key={chapter.id || idx}>
+                            <Col md={6} lg={4} key={chapter.id || idx} data-aos="fade-up" data-aos-delay={idx * 100}>
                                 <Card className="h-100 border-0 shadow-sm hover-effect rounded-4 overflow-hidden">
                                     <div className="position-relative">
                                         <Card.Img variant="top" src={chapter.img || `https://via.placeholder.com/400x250?text=${chapter.name}`} alt={chapter.name} style={{ height: '200px', objectFit: 'cover' }} />

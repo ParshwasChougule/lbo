@@ -22,7 +22,7 @@ const AdminRoutes = () => {
     return (
         <Routes>
             <Route path="login" element={<Login />} />
-            <Route path="/" element={
+            <Route element={
                 <ProtectedRoute>
                     <OutletWrapper />
                 </ProtectedRoute>

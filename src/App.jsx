@@ -17,7 +17,18 @@ import AdminRoutes from './routes/AdminRoutes';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastContainer } from 'react-toastify';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 function App() {
+  React.useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: 'ease-in-out',
+    });
+  }, []);
+
   return (
     <AuthProvider>
       <ToastContainer position="top-right" autoClose={3000} />

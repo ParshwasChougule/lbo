@@ -89,7 +89,7 @@ const Home = () => {
                 </div>
                 <Container className="position-relative z-1 py-5">
                     <Row className="align-items-center justify-content-center text-center">
-                        <Col lg={8} className="mb-4 mb-lg-0">
+                        <Col lg={8} className="mb-4 mb-lg-0" data-aos="fade-up">
                             <h1 className="display-4 fw-bold mb-3 text-white">Grow with unity/together</h1>
                             <p className="lead mb-4 text-white opacity-75">
                                 Connect, Collaborate, and Grow together. LBO is the premier platform for Lingayat entrepreneurs to network and expand their horizons.
@@ -127,7 +127,7 @@ const Home = () => {
             <section className="stats-section bg-white">
                 <Container>
                     <Row className="g-4">
-                        <Col md={4}>
+                        <Col md={4} data-aos="fade-up" data-aos-delay="100">
                             <div className="stat-card">
                                 <div className="stat-icon blue">
                                     <i className="fas fa-users"></i>
@@ -136,7 +136,7 @@ const Home = () => {
                                 <p>Active Members</p>
                             </div>
                         </Col>
-                        <Col md={4}>
+                        <Col md={4} data-aos="fade-up" data-aos-delay="200">
                             <div className="stat-card">
                                 <div className="stat-icon green">
                                     <i className="fas fa-building"></i>
@@ -145,7 +145,7 @@ const Home = () => {
                                 <p>Registered Businesses</p>
                             </div>
                         </Col>
-                        <Col md={4}>
+                        <Col md={4} data-aos="fade-up" data-aos-delay="300">
                             <div className="stat-card">
                                 <div className="stat-icon orange">
                                     <i className="fas fa-calendar-check"></i>

@@ -22,7 +22,7 @@ const Services = () => {
 
                     <Row className="g-4">
                         {/* Finance Assistance */}
-                        <Col md={6}>
+                        <Col md={6} data-aos="fade-right">
                             <Card className="h-100 border-0 shadow-sm service-card">
                                 <Card.Body className="p-4">
                                     <div className="d-flex align-items-center mb-4">
@@ -56,7 +56,7 @@ const Services = () => {
                         </Col>
 
                         {/* Legal & Compliance Help */}
-                        <Col md={6}>
+                        <Col md={6} data-aos="fade-left">
                             <Card className="h-100 border-0 shadow-sm service-card">
                                 <Card.Body className="p-4">
                                     <div className="d-flex align-items-center mb-4">
@@ -102,7 +102,7 @@ const Services = () => {
 
                     <Row className="g-4">
                         {/* Women Entrepreneurs Wing */}
-                        <Col md={6}>
+                        <Col md={6} data-aos="fade-right">
                             <Card className="h-100 border-0 shadow-sm service-card">
                                 <Card.Body className="p-4">
                                     <div className="d-flex align-items-center mb-4">
@@ -136,7 +136,7 @@ const Services = () => {
                         </Col>
 
                         {/* Youth & Startup Cell */}
-                        <Col md={6}>
+                        <Col md={6} data-aos="fade-left">
                             <Card className="h-100 border-0 shadow-sm service-card">
                                 <Card.Body className="p-4">
                                     <div className="d-flex align-items-center mb-4">

@@ -110,7 +110,7 @@ const Contact = () => {
                 <Container>
                     <Row className="g-4">
                         {/* Left Column: Contact Info & Map */}
-                        <Col lg={4}>
+                        <Col lg={4} data-aos="fade-right">
                             {/* Contact Info Card */}
                             <Card className="border-0 shadow-sm rounded-4 mb-4">
                                 <Card.Body className="p-4">
@@ -204,7 +204,7 @@ const Contact = () => {
                         </Col>
 
                         {/* Right Column: Contact Form */}
-                        <Col lg={8}>
+                        <Col lg={8} data-aos="fade-left">
                             <Card className="border-0 shadow-sm rounded-4 h-100">
                                 <Card.Body className="p-4 p-md-5">
                                     <h3 className="fw-bold mb-2">{isNewChapterRequest ? 'Chapter Application Form' : (isJoinRequest ? 'Membership Inquiry Form' : 'Send us a Message')}</h3>
