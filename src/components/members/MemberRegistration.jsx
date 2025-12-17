@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { addMember } from "../../services/dataService";
+import { addMember, uploadMemberImage } from "../../services/dataService";
 
 const MemberRegistration = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -11,10 +11,17 @@ const MemberRegistration = ({ onSuccess }) => {
         category: "",
         city: ""
     });
+    const [imageFile, setImageFile] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -23,10 +30,18 @@ const MemberRegistration = ({ onSuccess }) => {
         console.log("Submitting to Firebase...", formData);
 
         try {
-            await addMember(formData);
+            let imageUrl = "";
+            if (imageFile) {
+                imageUrl = await uploadMemberImage(imageFile);
+            }
+
+            const payload = { ...formData, img: imageUrl };
+
+            await addMember(payload);
             console.log("Success!");
             alert("✅ Member Saved Successfully to Firebase!");
             setFormData({ name: "", mobile: "", email: "", business: "", city: "" });
+            setImageFile(null);
             if (onSuccess) onSuccess(); // Trigger refresh
         } catch (error) {
             console.error("Firebase Error Full Object:", error);
@@ -61,6 +76,22 @@ const MemberRegistration = ({ onSuccess }) => {
             <div className="card-body p-4">
                 <form onSubmit={handleSubmit}>
                     <div className="row g-4">
+                        <div className="col-md-12 text-center mb-2">
+                            <div className="d-inline-block position-relative">
+                                <div className="rounded-circle overflow-hidden bg-light border d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{ width: '120px', height: '120px' }}>
+                                    {imageFile ? (
+                                        <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-100 h-100 object-fit-cover" />
+                                    ) : (
+                                        <i className="fas fa-camera fa-2x text-muted opacity-50"></i>
+                                    )}
+                                </div>
+                                <label className="btn btn-sm btn-outline-primary rounded-pill position-absolute bottom-0 start-50 translate-middle-x mb-2" style={{ whiteSpace: 'nowrap' }}>
+                                    Upload Photo <input type="file" hidden accept="image/*" onChange={handleImageChange} />
+                                </label>
+                            </div>
+                        </div>
+
                         <div className="col-md-6">
                             <label className="form-label text-muted small fw-bold">Full Name <span className="text-danger">*</span></label>
                             <input

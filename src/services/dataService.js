@@ -127,3 +127,96 @@ export const uploadSponsorImage = async (file) => {
         });
     }
 };
+
+// Helper to compress image to Base64
+const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                // Optimizing for speed: 400px max, 0.6 quality = very small payload
+                const MAX_WIDTH = 400;
+                const MAX_HEIGHT = 400;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                // Compress to quality 0.6 JPEG for faster Firestore writes
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                resolve(dataUrl);
+            };
+            img.onerror = (error) => reject(error);
+        };
+        reader.onerror = (error) => reject(error);
+    });
+};
+
+const timeoutPromise = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error('Upload timeout')), ms));
+
+export const uploadChapterImage = async (file) => {
+    try {
+        const storageRef = ref(storage, `chapters/${Date.now()}_${file.name}`);
+        const metadata = { contentType: file.type };
+
+        // RACE: If upload takes > 2.5 seconds (likely CORS retry loop), fail fast and use fallback 
+        const snapshot = await Promise.race([
+            uploadBytes(storageRef, file, metadata),
+            timeoutPromise(2500)
+        ]);
+
+        return await getDownloadURL(snapshot.ref);
+    } catch (error) {
+        console.warn("Primary upload failed/timed out, switching to fast fallback...", error);
+        try {
+            // Fallback: Compress and use Base64
+            // This is instant and bypasses network restrictions
+            const compressedBase64 = await compressImage(file);
+            return compressedBase64;
+        } catch (fallbackError) {
+            console.error("Fallback compression failed:", fallbackError);
+            throw error;
+        }
+    }
+};
+
+export const uploadChapterImages = async (files) => {
+    const uploadPromises = Array.from(files).map(file => uploadChapterImage(file));
+    return await Promise.all(uploadPromises);
+};
+
+export const uploadMemberImage = async (file) => {
+    try {
+        const storageRef = ref(storage, `members/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        return await getDownloadURL(snapshot.ref);
+    } catch (error) {
+        console.warn("Firebase Storage upload failed, falling back to Base64:", error);
+
+        // Fallback: Convert to Base64 string
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+};

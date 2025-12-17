@@ -60,6 +60,7 @@ const ChapterDetails = () => {
     const { city: chapterId } = useParams();
     const [chapter, setChapter] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showAllImages, setShowAllImages] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -250,23 +251,53 @@ const ChapterDetails = () => {
                                 </Row>
                             </div>
 
-                            {/* Recent Highlights Placeholder */}
+                            {/* Recent Highlights */}
                             <div className="bg-white p-4 p-lg-5 rounded-4 shadow-sm">
                                 <div className="d-flex justify-content-between align-items-end mb-4">
                                     <h3 className="fw-bold mb-0">Recent Highlights</h3>
-                                    <Button variant="link" className="text-decoration-none">View Gallery <i className="fas fa-arrow-right ms-1"></i></Button>
+                                    {chapter.images && chapter.images.length > 3 && (
+                                        <Button
+                                            variant="link"
+                                            className="text-decoration-none fw-bold"
+                                            onClick={() => setShowAllImages(!showAllImages)}
+                                        >
+                                            {showAllImages ? 'Show Less' : 'View Gallery'}
+                                            <i className={`fas fa-arrow-${showAllImages ? 'up' : 'right'} ms-1`}></i>
+                                        </Button>
+                                    )}
                                 </div>
 
                                 <Row className="g-3">
-                                    <Col md={4}>
-                                        <div className="rounded-3 bg-light" style={{ height: '150px', background: '#f8f9fa url(https://via.placeholder.com/300) center/cover' }}></div>
-                                    </Col>
-                                    <Col md={4}>
-                                        <div className="rounded-3 bg-light" style={{ height: '150px', background: '#f8f9fa url(https://via.placeholder.com/300) center/cover' }}></div>
-                                    </Col>
-                                    <Col md={4}>
-                                        <div className="rounded-3 bg-light" style={{ height: '150px', background: '#f8f9fa url(https://via.placeholder.com/300) center/cover' }}></div>
-                                    </Col>
+                                    {chapter.images && chapter.images.length > 0 ? (
+                                        chapter.images.slice(0, showAllImages ? undefined : 3).map((imgUrl, idx) => (
+                                            <Col md={4} key={idx}>
+                                                <div className="rounded-3 bg-light overflow-hidden shadow-sm position-relative group-hover-zoom" style={{ height: '220px' }}>
+                                                    <img
+                                                        src={imgUrl}
+                                                        alt={`Chapter Highlight ${idx + 1}`}
+                                                        className="w-100 h-100 object-fit-cover transition-transform"
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                </div>
+                                            </Col>
+                                        ))
+                                    ) : chapter.image || chapter.img ? (
+                                        <Col md={12}>
+                                            <div className="rounded-3 bg-light overflow-hidden shadow-sm" style={{ height: '350px' }}>
+                                                <img
+                                                    src={chapter.img || chapter.image}
+                                                    alt="Chapter Main Highlight"
+                                                    className="w-100 h-100"
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    ) : (
+                                        <Col xs={12} className="text-center py-5 text-muted bg-light rounded-4">
+                                            <i className="fas fa-images fa-3x mb-3 opacity-25"></i>
+                                            <p className="mb-0">No highlight images available for this chapter yet.</p>
+                                        </Col>
+                                    )}
                                 </Row>
                             </div>
 

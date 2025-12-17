@@ -82,9 +82,13 @@ const Members = () => {
                                             <div className="mb-2 d-inline-block position-relative">
                                                 <div className="rounded-circle p-1 border border-1 border-opacity-25" style={{ borderColor: '#ed9940' }}>
                                                     <div className="rounded-circle bg-light d-flex align-items-center justify-content-center overflow-hidden" style={{ width: '60px', height: '60px' }}>
-                                                        <span className="h4 mb-0 opacity-50 fw-bold" style={{ color: '#ed9940' }}>
-                                                            {member.name.charAt(0)}
-                                                        </span>
+                                                        {member.img ? (
+                                                            <img src={member.img} alt={member.name} className="w-100 h-100 object-fit-cover" />
+                                                        ) : (
+                                                            <span className="h4 mb-0 opacity-50 fw-bold" style={{ color: '#ed9940' }}>
+                                                                {member.name.charAt(0)}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>

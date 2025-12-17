@@ -198,8 +198,12 @@ const Home = () => {
                                 <Col key={member.id} md={6} lg={4}>
                                     <Card className="h-100 shadow-sm border-0 hover-effect text-center p-3">
                                         <Card.Body>
-                                            <div className="rounded-circle bg-primary-light d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '70px', height: '70px', fontSize: '1.5rem' }}>
-                                                👤
+                                            <div className="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center mb-3 overflow-hidden" style={{ width: '70px', height: '70px' }}>
+                                                {member.img ? (
+                                                    <img src={member.img} alt={member.name} className="w-100 h-100 object-fit-cover" />
+                                                ) : (
+                                                    <span style={{ fontSize: '1.5rem' }}>👤</span>
+                                                )}
                                             </div>
                                             <h5 className="card-title fw-bold">{member.name}</h5>
                                             <p className="text-primary mb-1 fw-bold small">{member.business}</p>

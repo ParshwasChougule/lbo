@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getChapters } from '../services/dataService';
 
@@ -72,8 +72,28 @@ const Chapters = () => {
                             <Col md={6} lg={4} key={chapter.id || idx} data-aos="fade-up" data-aos-delay={idx * 100}>
                                 <Card className="h-100 border-0 shadow-sm hover-effect rounded-4 overflow-hidden">
                                     <div className="position-relative">
-                                        <Card.Img variant="top" src={chapter.img || `https://via.placeholder.com/400x250?text=${chapter.name}`} alt={chapter.name} style={{ height: '200px', objectFit: 'cover' }} />
-                                        <div className="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-to-t" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}>
+                                        {chapter.images && chapter.images.length > 1 ? (
+                                            <Carousel interval={3000} pause="hover" controls={false} indicators={true}>
+                                                {chapter.images.map((imgUrl, i) => (
+                                                    <Carousel.Item key={i}>
+                                                        <img
+                                                            className="d-block w-100"
+                                                            src={imgUrl}
+                                                            alt={`${chapter.name} slide ${i}`}
+                                                            style={{ height: '200px', objectFit: 'cover' }}
+                                                        />
+                                                    </Carousel.Item>
+                                                ))}
+                                            </Carousel>
+                                        ) : (
+                                            <Card.Img
+                                                variant="top"
+                                                src={chapter.img || (chapter.images && chapter.images[0]) || `https://via.placeholder.com/400x250?text=${chapter.name}`}
+                                                alt={chapter.name}
+                                                style={{ height: '200px', objectFit: 'cover' }}
+                                            />
+                                        )}
+                                        <div className="position-absolute bottom-0 start-0 w-100 p-3" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)', zIndex: 10, pointerEvents: 'none' }}>
                                             <h4 className="text-white fw-bold mb-0">{chapter.name} Chapter</h4>
                                         </div>
                                     </div>

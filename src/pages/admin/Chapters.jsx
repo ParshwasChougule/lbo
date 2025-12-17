@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Form, Row, Col, Spinner, Badge } from 'react-bootstrap';
 import AdminLayout from '../../components/layout/AdminLayout';
-import { getChapters, addChapter, updateChapter, deleteChapter } from '../../services/dataService';
+import { getChapters, addChapter, updateChapter, deleteChapter, uploadChapterImage } from '../../services/dataService';
 import { toast } from 'react-toastify';
 
 const Chapters = () => {
@@ -14,9 +14,11 @@ const Chapters = () => {
         name: '',
         president: '',
         vicePresident: '',
-        activeMembers: ''
+        activeMembers: '',
+        img: '',
+        images: []
     });
-
+    const [imageFiles, setImageFiles] = useState([]);
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
@@ -28,14 +30,6 @@ const Chapters = () => {
             setLoading(true);
             const data = await getChapters();
             setChapters(data);
-
-            // Auto-seed if empty
-            if (data.length === 0) {
-                // We will not auto-seed here to avoid infinite loops if something goes wrong,
-                // instead we rely on the UI button or a one-time check.
-                // But if the user specifically requested it to "show up", we can try once.
-                // For now, let's leave the UI button as the primary trigger to avoid "ghost" writes.
-            }
         } catch (error) {
             console.error("Error fetching chapters:", error);
             toast.error("Failed to load chapters");
@@ -74,8 +68,11 @@ const Chapters = () => {
             name: chapter.name || '',
             president: chapter.leadership?.president || '',
             vicePresident: chapter.leadership?.vicePresident || '',
-            activeMembers: chapter.stats?.activeMembers || ''
+            activeMembers: chapter.stats?.activeMembers || '',
+            img: chapter.img || '',
+            images: chapter.images || (chapter.img ? [chapter.img] : [])
         });
+        setImageFiles([]); // Reset file input
         setShowModal(true);
     };
 
@@ -85,8 +82,11 @@ const Chapters = () => {
             name: '',
             president: '',
             vicePresident: '',
-            activeMembers: ''
+            activeMembers: '',
+            img: '',
+            images: []
         });
+        setImageFiles([]);
         setShowModal(true);
     };
 
@@ -103,22 +103,54 @@ const Chapters = () => {
         }
     };
 
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setImageFiles(Array.from(e.target.files));
+        }
+    };
+
+    const removeExistingImage = (indexToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, index) => index !== indexToRemove)
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
 
-        const chapterPayload = {
-            name: formData.name,
-            leadership: {
-                president: formData.president,
-                vicePresident: formData.vicePresident
-            },
-            stats: {
-                activeMembers: parseInt(formData.activeMembers) || 0
-            }
-        };
-
         try {
+            let uploadedUrls = [];
+
+            if (imageFiles.length > 0) {
+                console.log("Uploading images...");
+                // Note: You must update dataService.js to export uploadChapterImages if it's not already there.
+                // Assuming we added it in the previous step. If not, we can map over uploadChapterImage here.
+                const { uploadChapterImages } = require('../../services/dataService');
+                uploadedUrls = await uploadChapterImages(imageFiles);
+                console.log("Images uploaded:", uploadedUrls);
+            }
+
+            // Combine existing images (that weren't removed) with new uploads
+            const finalImages = [...formData.images, ...uploadedUrls];
+            const primaryImage = finalImages.length > 0 ? finalImages[0] : '';
+
+            const chapterPayload = {
+                name: formData.name,
+                img: primaryImage, // Maintain backward compatibility
+                images: finalImages, // New array field
+                leadership: {
+                    president: formData.president,
+                    vicePresident: formData.vicePresident
+                },
+                stats: {
+                    activeMembers: parseInt(formData.activeMembers) || 0
+                }
+            };
+
+            console.log("Saving chapter with payload:", chapterPayload);
+
             if (editingId) {
                 await updateChapter(editingId, chapterPayload);
                 toast.success("Chapter updated successfully");
@@ -130,7 +162,13 @@ const Chapters = () => {
             fetchChapters();
         } catch (error) {
             console.error("Error saving chapter:", error);
-            toast.error("Failed to save chapter");
+            if (error.code === 'storage/unauthorized') {
+                toast.error("Permission denied: Cannot upload image.");
+            } else if (error.toString().includes('exceeds')) {
+                toast.error("File is too large.");
+            } else {
+                toast.error("Failed to save chapter. " + (error.message || ""));
+            }
         } finally {
             setSubmitting(false);
         }
@@ -163,6 +201,16 @@ const Chapters = () => {
                                 <Card className="shadow border-0 rounded-4 h-100 hover-shadow transition-all">
                                     <div className="card-top-border bg-primary" style={{ height: '6px' }}></div>
                                     <Card.Body className="p-4 d-flex flex-column">
+
+                                        {/* Chapter Image Preview */}
+                                        <div className="mb-3 rounded-3 overflow-hidden shadow-sm" style={{ height: '150px' }}>
+                                            <img
+                                                src={chapter.img || `https://via.placeholder.com/400x250?text=${chapter.name}`}
+                                                alt={chapter.name}
+                                                className="w-100 h-100 object-fit-cover"
+                                            />
+                                        </div>
+
                                         <div className="d-flex justify-content-between align-items-start mb-3">
                                             <div>
                                                 <h4 className="fw-bold mb-1">{chapter.name}</h4>
@@ -227,12 +275,61 @@ const Chapters = () => {
             )}
 
             {/* Add/Edit Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
                 <Modal.Header closeButton className="border-0 pb-0">
                     <Modal.Title className="fw-bold">{editingId ? 'Edit Chapter' : 'Add New Chapter'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="p-4">
                     <Form onSubmit={handleSubmit}>
+
+                        {/* Image Upload Area */}
+                        <Form.Group className="mb-4">
+                            <Form.Label className="d-block fw-bold small text-uppercase text-muted mb-3">Chapter Images</Form.Label>
+
+                            {/* Previews Grid */}
+                            <div className="d-flex flex-wrap gap-3 mb-3">
+                                {/* Existing Images */}
+                                {formData.images && formData.images.map((url, idx) => (
+                                    <div key={idx} className="position-relative" style={{ width: '100px', height: '100px' }}>
+                                        <img src={url} alt={`Existing ${idx}`} className="w-100 h-100 object-fit-cover rounded-3 border" />
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger btn-sm p-0 position-absolute top-0 end-0 translate-middle-y shadow-sm rounded-circle d-flex align-items-center justify-content-center"
+                                            style={{ width: '20px', height: '20px', right: '-5px', top: '-5px' }}
+                                            onClick={() => removeExistingImage(idx)}
+                                        >
+                                            <span style={{ fontSize: '12px', lineHeight: 1 }}>&times;</span>
+                                        </button>
+                                    </div>
+                                ))}
+
+                                {/* New Files Previews */}
+                                {imageFiles.map((file, idx) => (
+                                    <div key={`new-${idx}`} className="position-relative opacity-75" style={{ width: '100px', height: '100px' }}>
+                                        <img src={URL.createObjectURL(file)} alt="New Preview" className="w-100 h-100 object-fit-cover rounded-3 border" />
+                                        <div className="position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center py-1" style={{ fontSize: '10px' }}>New</div>
+                                    </div>
+                                ))}
+
+                                {/* Add Button (File Input trigger) */}
+                                <div className="position-relative" style={{ width: '100px', height: '100px' }}>
+                                    <Form.Control
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImageChange}
+                                        className="position-absolute w-100 h-100 opacity-0 cursor-pointer"
+                                        style={{ zIndex: 10 }}
+                                    />
+                                    <div className="w-100 h-100 bg-light rounded-3 border border-dashed d-flex flex-column align-items-center justify-content-center text-muted">
+                                        <i className="fas fa-plus fa-lg mb-1"></i>
+                                        <span style={{ fontSize: '10px' }}>Add Photos</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <Form.Text className="text-muted small">Select multiple files. First image will be the cover.</Form.Text>
+                        </Form.Group>
+
                         <Form.Group className="mb-4">
                             <Form.Label className="fw-bold small text-uppercase text-muted">Chapter Name</Form.Label>
                             <Form.Control
@@ -245,6 +342,7 @@ const Chapters = () => {
                                 required
                             />
                         </Form.Group>
+                        {/* More fields... */}
 
                         <div className="row g-3 mb-4">
                             <Col md={12}>
