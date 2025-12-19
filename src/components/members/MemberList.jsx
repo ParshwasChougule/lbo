@@ -9,6 +9,8 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
     const [editingMember, setEditingMember] = useState(null);
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10); // Show 10 members per page
 
     useEffect(() => {
         fetchMembers();
@@ -80,6 +82,21 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
         member.category?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentMembers = filteredMembers.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Reset to page 1 when search term changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     if (loading) return <div className="text-center py-5">Loading members...</div>;
 
     return (
@@ -134,8 +151,8 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredMembers.length > 0 ? (
-                                filteredMembers.map((member) => (
+                            {currentMembers.length > 0 ? (
+                                currentMembers.map((member) => (
                                     <tr key={member.id} className="border-bottom-custom">
                                         <td className="ps-4 py-3">
                                             <div className="fw-bold text-dark">{member.name}</div>
@@ -200,6 +217,68 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
                         </tbody>
                     </Table>
                 </div>
+
+                {/* Pagination Controls */}
+                {filteredMembers.length > 0 && (
+                    <div className="d-flex justify-content-between align-items-center mt-4 px-3 pb-2">
+                        <div className="text-muted small">
+                            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredMembers.length)} of {filteredMembers.length} members
+                        </div>
+
+                        {totalPages > 1 && (
+                            <nav>
+                                <ul className="pagination pagination-sm mb-0">
+                                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                        <button
+                                            className="page-link rounded-start"
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                            disabled={currentPage === 1}
+                                        >
+                                            <i className="fas fa-chevron-left"></i>
+                                        </button>
+                                    </li>
+
+                                    {[...Array(totalPages)].map((_, index) => {
+                                        const pageNumber = index + 1;
+                                        // Show first page, last page, current page, and pages around current
+                                        if (
+                                            pageNumber === 1 ||
+                                            pageNumber === totalPages ||
+                                            (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+                                        ) {
+                                            return (
+                                                <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(pageNumber)}
+                                                    >
+                                                        {pageNumber}
+                                                    </button>
+                                                </li>
+                                            );
+                                        } else if (
+                                            pageNumber === currentPage - 2 ||
+                                            pageNumber === currentPage + 2
+                                        ) {
+                                            return <li key={pageNumber} className="page-item disabled"><span className="page-link">...</span></li>;
+                                        }
+                                        return null;
+                                    })}
+
+                                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                        <button
+                                            className="page-link rounded-end"
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            <i className="fas fa-chevron-right"></i>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* Edit Modal */}
@@ -248,22 +327,32 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Category</Form.Label>
-                                <Form.Select
+                                <Form.Control
+                                    type="text"
                                     name="category"
                                     value={editingMember.category}
                                     onChange={handleEditChange}
-                                >
-                                    <option value="">Select Category</option>
-                                    <option value="IT Services">IT Services</option>
-                                    <option value="Manufacturing">Manufacturing</option>
-                                    <option value="Retail">Retail</option>
-                                    <option value="Healthcare">Healthcare</option>
-                                    <option value="Education">Education</option>
-                                    <option value="Construction">Construction</option>
-                                    <option value="Consulting">Consulting</option>
-                                    <option value="Food & Beverage">Food & Beverage</option>
-                                    <option value="Other">Other</option>
-                                </Form.Select>
+                                    list="editCategoryOptions"
+                                    placeholder="e.g. IT Services or type custom category"
+                                />
+                                <datalist id="editCategoryOptions">
+                                    <option value="IT Services" />
+                                    <option value="Manufacturing" />
+                                    <option value="Retail" />
+                                    <option value="Healthcare" />
+                                    <option value="Education" />
+                                    <option value="Construction" />
+                                    <option value="Consulting" />
+                                    <option value="Food & Beverage" />
+                                    <option value="Finance & Banking" />
+                                    <option value="Real Estate" />
+                                    <option value="Transportation & Logistics" />
+                                    <option value="Agriculture" />
+                                    <option value="Hospitality & Tourism" />
+                                    <option value="Legal Services" />
+                                    <option value="Media & Entertainment" />
+                                    <option value="Other" />
+                                </datalist>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>City</Form.Label>

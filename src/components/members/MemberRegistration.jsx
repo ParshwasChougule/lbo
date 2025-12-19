@@ -40,7 +40,7 @@ const MemberRegistration = ({ onSuccess }) => {
             await addMember(payload);
             console.log("Success!");
             alert("✅ Member Saved Successfully to Firebase!");
-            setFormData({ name: "", mobile: "", email: "", business: "", city: "" });
+            setFormData({ name: "", mobile: "", email: "", business: "", category: "", city: "" });
             setImageFile(null);
             if (onSuccess) onSuccess(); // Trigger refresh
         } catch (error) {
@@ -106,7 +106,7 @@ const MemberRegistration = ({ onSuccess }) => {
                         </div>
 
                         <div className="col-md-6">
-                            <label className="form-label text-muted small fw-bold">Mobile Number <span className="text-danger">*</span></label>
+                            <label className="form-label text-muted small fw-bold">Mobile Number</label>
                             <input
                                 type="text"
                                 className="form-control form-control-lg bg-light border-0"
@@ -114,7 +114,6 @@ const MemberRegistration = ({ onSuccess }) => {
                                 name="mobile"
                                 value={formData.mobile}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
@@ -144,24 +143,34 @@ const MemberRegistration = ({ onSuccess }) => {
 
                         <div className="col-md-6">
                             <label className="form-label text-muted small fw-bold">Business Category <span className="text-danger">*</span></label>
-                            <select
-                                className="form-select form-select-lg bg-light border-0"
+                            <input
+                                type="text"
+                                className="form-control form-control-lg bg-light border-0"
+                                placeholder="e.g. IT Services or type custom category"
                                 name="category"
                                 value={formData.category}
                                 onChange={handleChange}
+                                list="categoryOptions"
                                 required
-                            >
-                                <option value="">Select Category</option>
-                                <option value="IT Services">IT Services</option>
-                                <option value="Manufacturing">Manufacturing</option>
-                                <option value="Retail">Retail</option>
-                                <option value="Healthcare">Healthcare</option>
-                                <option value="Education">Education</option>
-                                <option value="Construction">Construction</option>
-                                <option value="Consulting">Consulting</option>
-                                <option value="Food & Beverage">Food & Beverage</option>
-                                <option value="Other">Other</option>
-                            </select>
+                            />
+                            <datalist id="categoryOptions">
+                                <option value="IT Services" />
+                                <option value="Manufacturing" />
+                                <option value="Retail" />
+                                <option value="Healthcare" />
+                                <option value="Education" />
+                                <option value="Construction" />
+                                <option value="Consulting" />
+                                <option value="Food & Beverage" />
+                                <option value="Finance & Banking" />
+                                <option value="Real Estate" />
+                                <option value="Transportation & Logistics" />
+                                <option value="Agriculture" />
+                                <option value="Hospitality & Tourism" />
+                                <option value="Legal Services" />
+                                <option value="Media & Entertainment" />
+                                <option value="Other" />
+                            </datalist>
                         </div>
 
                         <div className="col-md-6">

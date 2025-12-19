@@ -104,6 +104,13 @@ const Members = () => {
                                                 </Badge>
                                             )}
 
+                                            {member.mobile && (
+                                                <p className="text-muted small mb-1" style={{ fontSize: '0.75rem' }}>
+                                                    <i className="fas fa-phone me-1" style={{ color: '#ed9940' }}></i>
+                                                    {member.mobile}
+                                                </p>
+                                            )}
+
                                             <p className="text-muted small mb-0" style={{ fontSize: '0.75rem' }}>
                                                 <i className="fas fa-map-marker-alt me-1" style={{ color: '#ed9940' }}></i>
                                                 {member.city || 'India'}
