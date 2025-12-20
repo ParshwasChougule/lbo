@@ -33,32 +33,33 @@ const Members = () => {
 
     return (
         <div className="members-page bg-light min-vh-100">
-            {/* Header Section */}
-            <section className="bg-white py-5 border-bottom">
+            {/* Hero Header - Simple Orange Background */}
+            <section className="py-5 text-white text-center"
+                style={{
+                    background: '#FF8C00'
+                }}
+            >
                 <Container>
-                    <div className="text-center">
-                        <h2 className="display-5 fw-bold text-dark mb-3">Our Valued Members</h2>
-                        <div className="mx-auto bg-primary mb-4" style={{ height: '4px', width: '60px' }}></div>
-                        <p className="lead text-muted mb-4 max-w-2xl mx-auto">
-                            The backbone of LBO. Meet the visionary entrepreneurs shaping our community's future.
-                        </p>
+                    <h1 className="display-3 fw-bold mb-3">Our Valued Members</h1>
+                    <p className="lead mx-auto mb-4" style={{ maxWidth: '700px' }}>
+                        The backbone of LBO. Meet the visionary entrepreneurs shaping our community's future.
+                    </p>
 
-                        {/* Search Bar - Clean & Centered */}
-                        <div className="row justify-content-center">
-                            <div className="col-md-6">
-                                <InputGroup size="lg">
-                                    <Form.Control
-                                        placeholder="Search member, business, or city..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="border-end-0 bg-light"
-                                        style={{ fontSize: '0.95rem' }}
-                                    />
-                                    <InputGroup.Text className="bg-light border-start-0 text-primary">
-                                        <i className="fas fa-search"></i>
-                                    </InputGroup.Text>
-                                </InputGroup>
-                            </div>
+                    {/* Search Bar - Clean & Centered */}
+                    <div className="row justify-content-center">
+                        <div className="col-md-6">
+                            <InputGroup size="lg">
+                                <Form.Control
+                                    placeholder="Search member, business, or city..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="border-end-0"
+                                    style={{ fontSize: '0.95rem' }}
+                                />
+                                <InputGroup.Text className="bg-white border-start-0 text-primary">
+                                    <i className="fas fa-search"></i>
+                                </InputGroup.Text>
+                            </InputGroup>
                         </div>
                     </div>
                 </Container>

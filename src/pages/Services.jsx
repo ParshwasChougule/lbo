@@ -96,7 +96,7 @@ const Services = () => {
             <section className="py-5 bg-white">
                 <Container>
                     <div className="section-title text-center mb-5">
-                        <h2 className="fw-bold text-dark">👩‍💼 Women Wins</h2>
+                        <h2 className="fw-bold text-dark">👩‍💼 Women Win</h2>
                         <p className="text-muted">Fostering the next generation of leaders and inclusive growth.</p>
                     </div>
 

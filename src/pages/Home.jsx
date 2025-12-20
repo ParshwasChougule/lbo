@@ -229,7 +229,7 @@ const Home = () => {
                 <Container>
                     <Row className="align-items-center">
                         <Col lg={6}>
-                            <img src="https://via.placeholder.com/500x300?text=About+LBO" className="img-fluid rounded shadow" alt="About LBO" />
+                            <img src="/assets/images/about.jpg" className="img-fluid rounded shadow" alt="About LBO" />
                         </Col>
                         <Col lg={6} className="mt-4 mt-lg-0">
                             <h2 className="fw-bold mb-3">About LBO</h2>

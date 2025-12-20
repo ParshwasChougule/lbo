@@ -5,24 +5,15 @@ import { Link } from 'react-router-dom';
 const About = () => {
     return (
         <div className="about-page">
-            {/* 1. Hero Header - Clean & Professional */}
-            <section className="position-relative py-5 text-white overflow-hidden"
+            {/* 1. Hero Header - Simple Orange Background */}
+            <section className="py-5 text-white text-center"
                 style={{
-                    background: 'linear-gradient(135deg, #FF6600 0%, #FF8C00 100%)',
-                    minHeight: '300px',
-                    display: 'flex',
-                    alignItems: 'center'
+                    background: '#FF8C00'
                 }}
             >
-                {/* Decorative circles */}
-                <div className="position-absolute top-0 end-0 opacity-10 translate-middle-y"
-                    style={{ width: '300px', height: '300px', borderRadius: '50%', background: 'white', marginRight: '-100px' }}></div>
-                <div className="position-absolute bottom-0 start-0 opacity-10 translate-middle-x"
-                    style={{ width: '200px', height: '200px', borderRadius: '50%', background: 'white', marginLeft: '-50px', marginBottom: '-50px' }}></div>
-
-                <Container className="position-relative z-1 text-center">
+                <Container>
                     <h1 className="display-3 fw-bold mb-3">About LBO</h1>
-                    <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px' }}>
+                    <p className="lead mx-auto" style={{ maxWidth: '700px' }}>
                         Empowering the Lingayat Community through Business, Ethics, and Unity.
                     </p>
                 </Container>
@@ -35,7 +26,7 @@ const About = () => {
                         <Col lg={6} className="mb-4 mb-lg-0">
                             <div className="position-relative ps-4 pt-4">
                                 <div className="position-absolute top-0 start-0 bg-primary rounded" style={{ width: '60px', height: '60px', opacity: 0.1 }}></div>
-                                <img src="https://via.placeholder.com/600x500?text=About+Our+Community" alt="LBO Community Meeting" className="img-fluid rounded-3 shadow-sm position-relative z-1" />
+                                <img src="/assets/images/about.jpg" alt="LBO Community Meeting" className="img-fluid rounded-3 shadow-sm position-relative z-1" />
                                 <div className="position-absolute bottom-0 end-0 bg-secondary rounded" style={{ width: '100px', height: '100px', opacity: 0.1, marginRight: '-20px', marginBottom: '-20px' }}></div>
                             </div>
                         </Col>

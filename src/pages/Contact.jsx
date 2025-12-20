@@ -6,12 +6,14 @@ const Contact = () => {
     const location = useLocation();
     const isNewChapterRequest = location.state?.type === 'new_chapter';
     const isJoinRequest = location.state?.type === 'join_lbo';
+    const isJoinChapterRequest = location.state?.type === 'join_chapter';
+    const chapterName = location.state?.chapterName || '';
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
-        subject: isNewChapterRequest ? 'Application to Start a New Chapter' : (isJoinRequest ? 'Membership Inquiry' : ''),
+        subject: isNewChapterRequest ? 'Application to Start a New Chapter' : (isJoinRequest ? 'Membership Inquiry' : (isJoinChapterRequest ? `Join ${chapterName}` : '')),
         message: '',
         city: '',
         experience: ''
@@ -28,8 +30,13 @@ const Contact = () => {
                 ...prev,
                 subject: 'Membership Inquiry'
             }));
+        } else if (isJoinChapterRequest) {
+            setFormData(prev => ({
+                ...prev,
+                subject: `Join ${chapterName}`
+            }));
         }
-    }, [isNewChapterRequest, isJoinRequest]);
+    }, [isNewChapterRequest, isJoinRequest, isJoinChapterRequest, chapterName]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,13 +102,15 @@ const Contact = () => {
             >
                 <div className="position-absolute w-100 h-100" style={{ background: 'url(/assets/images/pattern.png) repeat', opacity: 0.1 }}></div>
                 <Container className="position-relative z-1 text-center">
-                    <h1 className="display-3 fw-bold mb-3">{isNewChapterRequest ? 'Start a New Chapter' : (isJoinRequest ? 'Join LBO Network' : 'Contact Us')}</h1>
+                    <h1 className="display-3 fw-bold mb-3">{isNewChapterRequest ? 'Start a New Chapter' : (isJoinRequest ? 'Join LBO Network' : (isJoinChapterRequest ? `Join ${chapterName}` : 'Contact Us'))}</h1>
                     <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px' }}>
                         {isNewChapterRequest
                             ? 'Ready to lead? Fill out the form below to apply for a new chapter in your city.'
                             : (isJoinRequest
                                 ? 'Become a part of the fastest-growing business community. Fill out the form to inquire about membership.'
-                                : "We'd love to hear from you. Reach out to us for any queries or collaborations.")}
+                                : (isJoinChapterRequest
+                                    ? `Become a member of ${chapterName}. Fill out the form below to join this chapter.`
+                                    : "We'd love to hear from you. Reach out to us for any queries or collaborations."))}
                     </p>
                 </Container>
             </section>
@@ -207,8 +216,8 @@ const Contact = () => {
                         <Col lg={8} data-aos="fade-left">
                             <Card className="border-0 shadow-sm rounded-4 h-100">
                                 <Card.Body className="p-4 p-md-5">
-                                    <h3 className="fw-bold mb-2">{isNewChapterRequest ? 'Chapter Application Form' : (isJoinRequest ? 'Membership Inquiry Form' : 'Send us a Message')}</h3>
-                                    <p className="text-muted mb-4">{isNewChapterRequest ? 'Please provide details about the city and your background.' : (isJoinRequest ? 'Let us know how we can help you grow your business.' : 'We will get back to you within 24 hours.')}</p>
+                                    <h3 className="fw-bold mb-2">{isNewChapterRequest ? 'Chapter Application Form' : (isJoinRequest ? 'Membership Inquiry Form' : (isJoinChapterRequest ? 'Chapter Membership Form' : 'Send us a Message'))}</h3>
+                                    <p className="text-muted mb-4">{isNewChapterRequest ? 'Please provide details about the city and your background.' : (isJoinRequest ? 'Let us know how we can help you grow your business.' : (isJoinChapterRequest ? 'Please provide your details to join this chapter.' : 'We will get back to you within 24 hours.'))}</p>
                                     <Form onSubmit={handleSubmit}>
                                         <Row className="g-3">
                                             <Col md={6}>
@@ -299,7 +308,7 @@ const Contact = () => {
                                                     <Form.Control
                                                         as="textarea"
                                                         rows={6}
-                                                        placeholder={isNewChapterRequest ? "Tell us about your business background and why you want to lead a chapter..." : (isJoinRequest ? "Tell us about your business and why you'd like to join LBO..." : "Type your message here...")}
+                                                        placeholder={isNewChapterRequest ? "Tell us about your business background and why you want to lead a chapter..." : (isJoinRequest ? "Tell us about your business and why you'd like to join LBO..." : (isJoinChapterRequest ? `Tell us about your business and why you'd like to join ${chapterName}...` : "Type your message here..."))}
                                                         name="message"
                                                         value={formData.message}
                                                         onChange={handleChange}
@@ -310,7 +319,7 @@ const Contact = () => {
                                             </Col>
                                             <Col md={12} className="mt-4">
                                                 <Button variant="primary" type="submit" size="lg" className="w-100 rounded-pill shadow-sm py-2">
-                                                    {isNewChapterRequest ? 'Submit Application' : (isJoinRequest ? 'Submit Inquiry' : 'Send Message')}
+                                                    {isNewChapterRequest ? 'Submit Application' : (isJoinRequest ? 'Submit Inquiry' : (isJoinChapterRequest ? 'Submit Request' : 'Send Message'))}
                                                 </Button>
                                             </Col>
                                         </Row>

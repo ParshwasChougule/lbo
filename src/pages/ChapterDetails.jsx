@@ -150,7 +150,14 @@ const ChapterDetails = () => {
                             </p>
                         </Col>
                         <Col lg={4} className="text-lg-end mt-4 mt-lg-0">
-                            <Button as={Link} to="/register" variant="light" size="lg" className="rounded-pill px-5 shadow fw-bold text-primary">
+                            <Button
+                                as={Link}
+                                to="/contact"
+                                state={{ type: 'join_chapter', chapterName: chapter.name }}
+                                variant="light"
+                                size="lg"
+                                className="rounded-pill px-5 shadow fw-bold text-primary"
+                            >
                                 Join This Chapter
                             </Button>
                         </Col>
