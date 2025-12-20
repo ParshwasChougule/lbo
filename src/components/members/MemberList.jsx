@@ -133,19 +133,19 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
                 </div>
 
                 <div className="table-responsive rounded-3 border">
-                    <Table hover className="mb-0 align-middle">
+                    <Table hover className="mb-0 align-middle" style={{ minWidth: '1200px' }}>
                         <thead className="bg-light text-muted small text-uppercase fw-bold">
                             <tr>
-                                <th className="py-3 ps-4 border-0">Name</th>
-                                <th className="py-3 border-0">Mobile</th>
-                                <th className="py-3 border-0">Email</th>
-                                <th className="py-3 border-0">Business</th>
-                                <th className="py-3 border-0">Category</th>
-                                <th className="py-3 border-0">City</th>
+                                <th className="py-3 ps-4 border-0" style={{ width: '15%' }}>Name</th>
+                                <th className="py-3 border-0" style={{ width: '12%' }}>Mobile</th>
+                                <th className="py-3 border-0" style={{ width: '18%' }}>Email</th>
+                                <th className="py-3 border-0" style={{ width: '15%' }}>Business</th>
+                                <th className="py-3 border-0" style={{ width: '12%' }}>Category</th>
+                                <th className="py-3 border-0" style={{ width: '10%' }}>City</th>
                                 {isAdmin && (
                                     <>
-                                        <th className="py-3 border-0 text-center">Status</th>
-                                        <th className="py-3 border-0 text-center">Actions</th>
+                                        <th className="py-3 border-0 text-center" style={{ width: '8%' }}>Status</th>
+                                        <th className="py-3 border-0 text-center" style={{ width: '10%' }}>Actions</th>
                                     </>
                                 )}
                             </tr>
@@ -155,17 +155,27 @@ const MemberList = ({ isAdmin = false, refreshTrigger }) => {
                                 currentMembers.map((member) => (
                                     <tr key={member.id} className="border-bottom-custom">
                                         <td className="ps-4 py-3">
-                                            <div className="fw-bold text-dark">{member.name}</div>
+                                            <div className="fw-bold text-dark text-truncate" style={{ maxWidth: '180px' }} title={member.name}>
+                                                {member.name}
+                                            </div>
                                         </td>
-                                        <td className="py-3 text-muted">{member.mobile}</td>
-                                        <td className="py-3 text-muted">{member.email || '-'}</td>
-                                        <td className="py-3 fw-medium text-dark">{member.business}</td>
+                                        <td className="py-3 text-muted">{member.mobile || '-'}</td>
+                                        <td className="py-3 text-muted">
+                                            <div className="text-truncate" style={{ maxWidth: '200px' }} title={member.email}>
+                                                {member.email || '-'}
+                                            </div>
+                                        </td>
+                                        <td className="py-3 fw-medium text-dark">
+                                            <div className="text-truncate" style={{ maxWidth: '180px' }} title={member.business}>
+                                                {member.business || '-'}
+                                            </div>
+                                        </td>
                                         <td className="py-3">
-                                            <Badge bg="light" text="dark" className="border fw-normal">
-                                                {member.category}
+                                            <Badge bg="light" text="dark" className="border fw-normal text-truncate" style={{ maxWidth: '140px' }}>
+                                                {member.category || '-'}
                                             </Badge>
                                         </td>
-                                        <td className="py-3 text-muted">{member.city}</td>
+                                        <td className="py-3 text-muted">{member.city || '-'}</td>
                                         {isAdmin && (
                                             <>
                                                 <td className="py-3 text-center">

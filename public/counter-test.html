@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Animation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .spacer {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+        }
+
+        .stats-section {
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 50px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            margin: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .count {
+            font-size: 48px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .plus {
+            color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="spacer">
+        <h1>Scroll Down to See Counter Animation</h1>
+    </div>
+
+    <div class="stats-section">
+        <div class="stat-card">
+            <h2><span class="count" id="members">0</span><span class="plus">+</span></h2>
+            <p>Active Members</p>
+        </div>
+        <div class="stat-card">
+            <h2><span class="count" id="businesses">0</span><span class="plus">+</span></h2>
+            <p>Registered Businesses</p>
+        </div>
+        <div class="stat-card">
+            <h2><span class="count" id="events">0</span><span class="plus">+</span></h2>
+            <p>Successful Events</p>
+        </div>
+    </div>
+
+    <div class="spacer">
+        <h1>Animation Complete!</h1>
+    </div>
+
+    <script>
+        const targets = {
+            members: 10,
+            businesses: 5,
+            events: 3
+        };
+
+        let hasAnimated = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                console.log('Intersection:', entry.isIntersecting, 'hasAnimated:', hasAnimated);
+                if (entry.isIntersecting && !hasAnimated) {
+                    console.log('Starting animation!');
+                    hasAnimated = true;
+
+                    Object.keys(targets).forEach(key => {
+                        animateCounter(key, targets[key]);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        function animateCounter(elementId, target) {
+            const element = document.getElementById(elementId);
+            const duration = 2000;
+            const steps = 60;
+            const increment = target / steps;
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, duration / steps);
+        }
+
+        const statsSection = document.querySelector('.stats-section');
+        observer.observe(statsSection);
+    </script>
+</body>
+
+</html>

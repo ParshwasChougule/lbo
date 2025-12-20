@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Row, Col, Badge, Spinner } from 'react-bootstrap';
-import { getEvents } from '../../services/dataService';
+import { Card, Table, Button, Row, Col, Badge, Spinner, Modal } from 'react-bootstrap';
+import { getEvents, deleteEvent } from '../../services/dataService';
 import AddEvent from '../../components/events/AddEvent';
 import AdminLayout from '../../components/layout/AdminLayout';
 
@@ -8,6 +8,8 @@ const Events = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editingEvent, setEditingEvent] = useState(null);
 
     const fetchEvents = async () => {
         setLoading(true);
@@ -29,6 +31,30 @@ const Events = () => {
 
     const handleEventAdded = () => {
         setShowAddForm(false);
+        fetchEvents();
+    };
+
+    const handleEdit = (event) => {
+        setEditingEvent(event);
+        setShowEditModal(true);
+    };
+
+    const handleDelete = async (eventId, eventTitle) => {
+        if (window.confirm(`Are you sure you want to cancel/delete "${eventTitle}"?`)) {
+            try {
+                await deleteEvent(eventId);
+                alert('Event deleted successfully!');
+                fetchEvents();
+            } catch (error) {
+                console.error('Error deleting event:', error);
+                alert('Failed to delete event.');
+            }
+        }
+    };
+
+    const handleEventUpdated = () => {
+        setShowEditModal(false);
+        setEditingEvent(null);
         fetchEvents();
     };
 
@@ -116,8 +142,22 @@ const Events = () => {
                                             </Badge>
                                         </td>
                                         <td>
-                                            <Button variant="outline-primary" size="sm" className="me-2 rounded-pill px-3">Edit</Button>
-                                            <Button variant="outline-danger" size="sm" className="rounded-pill px-3">Cancel</Button>
+                                            <Button
+                                                variant="outline-primary"
+                                                size="sm"
+                                                className="me-2 rounded-pill px-3"
+                                                onClick={() => handleEdit(event)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="outline-danger"
+                                                size="sm"
+                                                className="rounded-pill px-3"
+                                                onClick={() => handleDelete(event.id, event.title)}
+                                            >
+                                                Cancel
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -131,6 +171,23 @@ const Events = () => {
                     )}
                 </Card.Body>
             </Card>
+
+            {/* Edit Event Modal */}
+            <Modal show={showEditModal} onHide={() => setShowEditModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Event</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {editingEvent && (
+                        <AddEvent
+                            onEventAdded={handleEventUpdated}
+                            onCancel={() => setShowEditModal(false)}
+                            editMode={true}
+                            eventData={editingEvent}
+                        />
+                    )}
+                </Modal.Body>
+            </Modal>
         </AdminLayout>
     );
 };

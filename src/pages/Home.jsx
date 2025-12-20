@@ -10,6 +10,12 @@ const Home = () => {
         businesses: 0,
         events: 0
     });
+    const [displayCounts, setDisplayCounts] = useState({
+        members: 0,
+        businesses: 0,
+        events: 0
+    });
+    const [hasAnimated, setHasAnimated] = useState(false);
     const [upcomingEvent, setUpcomingEvent] = useState(null);
     const [featuredMembers, setFeaturedMembers] = useState([]);
     const [marqueeText, setMarqueeText] = useState("");
@@ -57,6 +63,66 @@ const Home = () => {
 
         fetchStats();
     }, []);
+
+    // Animated Counter Effect
+    useEffect(() => {
+        console.log('Counter effect running. Counts:', counts, 'hasAnimated:', hasAnimated);
+
+        if (counts.members === 0 && counts.businesses === 0 && counts.events === 0) {
+            console.log('Skipping animation - data not loaded yet');
+            return; // Don't animate if data not loaded yet
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    console.log('Intersection observed:', entry.isIntersecting, 'hasAnimated:', hasAnimated);
+                    if (entry.isIntersecting && !hasAnimated) {
+                        console.log('Starting counter animation!');
+                        setHasAnimated(true);
+
+                        // Animate each counter
+                        const animateCounter = (key, target) => {
+                            const duration = 2000; // 2 seconds
+                            const frameRate = 1000 / 60; // 60 FPS
+                            const totalFrames = Math.round(duration / frameRate);
+                            let frame = 0;
+
+                            const counter = setInterval(() => {
+                                frame++;
+                                const progress = frame / totalFrames;
+                                const currentValue = Math.round(progress * target);
+
+                                setDisplayCounts(prev => ({ ...prev, [key]: currentValue }));
+
+                                if (frame === totalFrames) {
+                                    clearInterval(counter);
+                                    setDisplayCounts(prev => ({ ...prev, [key]: target }));
+                                }
+                            }, frameRate);
+                        };
+
+                        // Start animations for all counters
+                        animateCounter('members', counts.members);
+                        animateCounter('businesses', counts.businesses);
+                        animateCounter('events', counts.events);
+                    }
+                });
+            },
+            { threshold: 0.3 } // Trigger when 30% visible
+        );
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+
+        return () => {
+            if (statsSection) {
+                observer.unobserve(statsSection);
+            }
+        };
+    }, [counts, hasAnimated]);
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -132,7 +198,7 @@ const Home = () => {
                                 <div className="stat-icon blue">
                                     <i className="fas fa-users"></i>
                                 </div>
-                                <h2><span className="count">{counts.members}</span><span className="plus">+</span></h2>
+                                <h2><span className="count">{displayCounts.members}</span><span className="plus">+</span></h2>
                                 <p>Active Members</p>
                             </div>
                         </Col>
@@ -141,7 +207,7 @@ const Home = () => {
                                 <div className="stat-icon green">
                                     <i className="fas fa-building"></i>
                                 </div>
-                                <h2><span className="count">{counts.businesses}</span><span className="plus">+</span></h2>
+                                <h2><span className="count">{displayCounts.businesses}</span><span className="plus">+</span></h2>
                                 <p>Registered Businesses</p>
                             </div>
                         </Col>
@@ -150,7 +216,7 @@ const Home = () => {
                                 <div className="stat-icon orange">
                                     <i className="fas fa-calendar-check"></i>
                                 </div>
-                                <h2><span className="count">{counts.events}</span><span className="plus">+</span></h2>
+                                <h2><span className="count">{displayCounts.events}</span><span className="plus">+</span></h2>
                                 <p>Successful Events</p>
                             </div>
                         </Col>

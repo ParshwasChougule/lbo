@@ -8,13 +8,13 @@ const Footer = () => {
             <Container>
                 <Row className="g-4">
                     <Col md={4}>
-                        <h4 className="fw-bold mb-3">LBO</h4>
+                        <h4 className="fw-bold mb-3 text-light">LBO</h4>
                         <p className="text-white-50">
                             Empowering the Lingayat business community through connection, collaboration, and growth.
                         </p>
                     </Col>
                     <Col md={2}>
-                        <h5 className="mb-3">Quick Links</h5>
+                        <h5 className="mb-3 text-light">Quick Links</h5>
                         <ul className="list-unstyled">
                             <li><Link to="/about" className="text-white-50 text-decoration-none">About Us</Link></li>
                             <li><Link to="/members" className="text-white-50 text-decoration-none">Members</Link></li>
@@ -23,7 +23,7 @@ const Footer = () => {
                         </ul>
                     </Col>
                     <Col md={3}>
-                        <h5 className="mb-3">Contact</h5>
+                        <h5 className="mb-3 text-light">Contact</h5>
                         <ul className="list-unstyled text-white-50">
                             <li>📞 +91 7620054812</li>
                             <li>📞 +91 8999480836</li>
@@ -31,7 +31,7 @@ const Footer = () => {
                         </ul>
                     </Col>
                     <Col md={3}>
-                        <h5 className="mb-3">Legal</h5>
+                        <h5 className="mb-3 text-light">Legal</h5>
                         <ul className="list-unstyled">
                             <li><Link to="/privacy" className="text-white-50 text-decoration-none">Privacy Policy</Link></li>
                             <li><Link to="/terms" className="text-white-50 text-decoration-none">Terms of Service</Link></li>

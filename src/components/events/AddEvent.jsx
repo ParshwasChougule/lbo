@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { addEvent } from '../../services/dataService';
+import { addEvent, updateEvent } from '../../services/dataService';
 
-const AddEvent = ({ onEventAdded, onCancel }) => {
+const AddEvent = ({ onEventAdded, onCancel, editMode = false, eventData = null }) => {
     const [formData, setFormData] = useState({
         title: '',
         date: '',
@@ -13,6 +13,20 @@ const AddEvent = ({ onEventAdded, onCancel }) => {
     });
     const [loading, setLoading] = useState(false);
 
+    // Pre-fill form if in edit mode
+    useEffect(() => {
+        if (editMode && eventData) {
+            setFormData({
+                title: eventData.title || '',
+                date: eventData.date || '',
+                type: eventData.type || 'Event',
+                description: eventData.description || '',
+                location: eventData.location || '',
+                status: eventData.status || 'Scheduled'
+            });
+        }
+    }, [editMode, eventData]);
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -21,13 +35,20 @@ const AddEvent = ({ onEventAdded, onCancel }) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await addEvent(formData);
-            alert('Event Added Successfully!');
+            if (editMode && eventData) {
+                // Update existing event
+                await updateEvent(eventData.id, formData);
+                alert('Event Updated Successfully!');
+            } else {
+                // Add new event
+                await addEvent(formData);
+                alert('Event Added Successfully!');
+            }
             setFormData({ title: '', date: '', type: 'Event', description: '', location: '', status: 'Scheduled' });
             if (onEventAdded) onEventAdded();
         } catch (error) {
-            console.error("Error adding event:", error);
-            alert("Failed to add event.");
+            console.error(`Error ${editMode ? 'updating' : 'adding'} event:`, error);
+            alert(`Failed to ${editMode ? 'update' : 'add'} event.`);
         } finally {
             setLoading(false);
         }
@@ -36,7 +57,7 @@ const AddEvent = ({ onEventAdded, onCancel }) => {
     return (
         <div className="p-3 border rounded bg-light mb-4">
             <div className="d-flex justify-content-between mb-3">
-                <h5>Schedule New Event / Meeting</h5>
+                <h5>{editMode ? 'Edit Event' : 'Schedule New Event / Meeting'}</h5>
                 <Button variant="outline-secondary" size="sm" onClick={onCancel}>Cancel</Button>
             </div>
             <Form onSubmit={handleSubmit}>
@@ -79,7 +100,7 @@ const AddEvent = ({ onEventAdded, onCancel }) => {
                 </Row>
                 <div className="mt-3">
                     <Button type="submit" variant="primary" disabled={loading}>
-                        {loading ? 'Scheduling...' : 'Schedule Event'}
+                        {loading ? (editMode ? 'Updating...' : 'Scheduling...') : (editMode ? 'Update Event' : 'Schedule Event')}
                     </Button>
                 </div>
             </Form>

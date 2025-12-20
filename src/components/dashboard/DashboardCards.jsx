@@ -37,19 +37,18 @@ const DashboardCards = () => {
         <div className="row g-4 mb-4">
             {/* Stats Card: Total Members */}
             <div className="col-xl-3 col-md-6">
-                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ background: 'linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)' }}>
-                    <div className="card-body p-4 position-relative text-white">
-                        <div className="d-flex justify-content-between align-items-center mb-4 position-relative z-1">
-                            <div className="bg-white bg-opacity-25 p-2 rounded-3">
-                                <i className="fas fa-users fa-lg text-white"></i>
+                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ borderTop: '4px solid #6366f1' }}>
+                    <div className="card-body p-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div className="p-3 rounded-3" style={{ background: '#6366f1', color: 'white' }}>
+                                <i className="fas fa-users fa-lg"></i>
                             </div>
-                            <span className="badge bg-white bg-opacity-25 text-white fw-normal">+2.5%</span>
+                            <span className="badge bg-success bg-opacity-10 text-success fw-normal border border-success">+2.5%</span>
                         </div>
-                        <div className="position-relative z-1">
-                            <h3 className="display-5 fw-bold mb-1">{counts.members}</h3>
-                            <p className="mb-0 opacity-75 fw-medium small text-uppercase letter-spacing-1">Total Members</p>
+                        <div>
+                            <h3 className="display-5 fw-bold mb-1" style={{ color: '#6366f1' }}>{counts.members}</h3>
+                            <p className="mb-0 text-muted fw-medium small text-uppercase">Total Members</p>
                         </div>
-                        <i className="fas fa-users position-absolute opacity-10" style={{ fontSize: '150px', right: '-20px', bottom: '-40px' }}></i>
                     </div>
                 </div>
             </div>
@@ -58,38 +57,36 @@ const DashboardCards = () => {
 
             {/* Stats Card: Total Chapters */}
             <div className="col-xl-3 col-md-6">
-                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ background: 'linear-gradient(135deg, #FBAB7E 0%, #F7CE68 100%)' }}>
-                    <div className="card-body p-4 position-relative text-white">
-                        <div className="d-flex justify-content-between align-items-center mb-4 position-relative z-1">
-                            <div className="bg-white bg-opacity-25 p-2 rounded-3">
-                                <i className="fas fa-map-marked-alt fa-lg text-white"></i>
+                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ borderTop: '4px solid #f59e0b' }}>
+                    <div className="card-body p-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div className="p-3 rounded-3" style={{ background: '#f59e0b', color: 'white' }}>
+                                <i className="fas fa-map-marked-alt fa-lg"></i>
                             </div>
-                            <span className="badge bg-white bg-opacity-25 text-white fw-normal">New</span>
+                            <span className="badge bg-primary bg-opacity-10 text-primary fw-normal border border-primary">New</span>
                         </div>
-                        <div className="position-relative z-1">
-                            <h3 className="display-5 fw-bold mb-1">{counts.chapters}</h3>
-                            <p className="mb-0 opacity-75 fw-medium small text-uppercase letter-spacing-1">Active Chapters</p>
+                        <div>
+                            <h3 className="display-5 fw-bold mb-1" style={{ color: '#f59e0b' }}>{counts.chapters}</h3>
+                            <p className="mb-0 text-muted fw-medium small text-uppercase">Active Chapters</p>
                         </div>
-                        <i className="fas fa-map-marked-alt position-absolute opacity-10" style={{ fontSize: '150px', right: '-20px', bottom: '-40px' }}></i>
                     </div>
                 </div>
             </div>
 
             {/* Stats Card: Pending Approvals */}
             <div className="col-xl-3 col-md-6">
-                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ background: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%)' }}>
-                    <div className="card-body p-4 position-relative text-white">
-                        <div className="d-flex justify-content-between align-items-center mb-4 position-relative z-1">
-                            <div className="bg-white bg-opacity-25 p-2 rounded-3">
-                                <i className="fas fa-user-clock fa-lg text-white"></i>
+                <div className="card h-100 border-0 shadow-sm overflow-hidden dash-card" style={{ borderTop: '4px solid #ec4899' }}>
+                    <div className="card-body p-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div className="p-3 rounded-3" style={{ background: '#ec4899', color: 'white' }}>
+                                <i className="fas fa-user-clock fa-lg"></i>
                             </div>
-                            <span className="badge bg-white bg-opacity-25 text-white fw-normal">Action Needed</span>
+                            <span className="badge bg-warning bg-opacity-10 text-warning fw-normal border border-warning">Action Needed</span>
                         </div>
-                        <div className="position-relative z-1">
-                            <h3 className="display-5 fw-bold mb-1">{counts.pending}</h3>
-                            <p className="mb-0 opacity-75 fw-medium small text-uppercase letter-spacing-1">Pending Requests</p>
+                        <div>
+                            <h3 className="display-5 fw-bold mb-1" style={{ color: '#ec4899' }}>{counts.pending}</h3>
+                            <p className="mb-0 text-muted fw-medium small text-uppercase">Pending Requests</p>
                         </div>
-                        <i className="fas fa-user-clock position-absolute opacity-10" style={{ fontSize: '150px', right: '-20px', bottom: '-40px' }}></i>
                     </div>
                 </div>
             </div>

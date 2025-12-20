@@ -91,6 +91,16 @@ export const getEvents = async () => {
     return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 };
 
+export const updateEvent = async (id, updatedData) => {
+    const eventDoc = doc(db, "events", id);
+    return await updateDoc(eventDoc, updatedData);
+};
+
+export const deleteEvent = async (id) => {
+    const eventDoc = doc(db, "events", id);
+    return await deleteDoc(eventDoc);
+};
+
 // --- SETTINGS SERVICE ---
 // We will use a fixed document ID 'general' in a 'settings' collection
 

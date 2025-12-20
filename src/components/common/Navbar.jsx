@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, Button, NavDropdown } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { MapPin, Building2, Factory, Landmark } from 'lucide-react';
 
 const AppNavbar = () => {
     const location = useLocation();
@@ -37,10 +38,22 @@ const AppNavbar = () => {
                             onMouseEnter={showDropdown}
                             onMouseLeave={hideDropdown}
                         >
-                            <NavDropdown.Item as={Link} to="/chapters/sangli">Sangli Chapter</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/chapters/kolhapur">Kolhapur Chapter</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/chapters/ichalkaranji">Ichalkaranji Chapter</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/chapters/solapur">Solapur Chapter</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/chapters/sangli" style={{ fontSize: '1.05rem' }}>
+                                <MapPin size={20} className="me-2" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#3b82f6' }} />
+                                Sangli Chapter
+                            </NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/chapters/kolhapur" style={{ fontSize: '1.05rem' }}>
+                                <Building2 size={20} className="me-2" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#8b5cf6' }} />
+                                Kolhapur Chapter
+                            </NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/chapters/ichalkaranji" style={{ fontSize: '1.05rem' }}>
+                                <Factory size={20} className="me-2" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#f97316' }} />
+                                Ichalkaranji Chapter
+                            </NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/chapters/solapur" style={{ fontSize: '1.05rem' }}>
+                                <Landmark size={20} className="me-2" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#10b981' }} />
+                                Solapur Chapter
+                            </NavDropdown.Item>
                         </NavDropdown>
 
                         <Nav.Link as={Link} to="/members" className="nav-link-custom" active={location.pathname === '/members'}>Members</Nav.Link>
